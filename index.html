@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<!--
+
+Copyright 2007 Erik Arvidsson
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+
+
+Converted to Chrome Extension 2013, Thorsten Basse <himself@tagedieb.com>
+
+-->
+
+<html>
+  <head>
+    <title>Regular Expression Tool</title>
+    <link rel="stylesheet" href="xtree2b/css/xtree2.css">
+    <script src="xtree2b/js/xtree2.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css" media="all">
+    <script src="main.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <div id="regexp-container" class="container"><label for="regexp">RegExp</label><textarea id="regexp" tabindex=1></textarea></div>
+    <div id="labels">
+      <label tabindex="3"><input type="checkbox" id="global">Global</label>
+      <label tabindex="4"><input type="checkbox" id="multiline">Multiline</label>
+      <label tabindex="5"><input type="checkbox" id="ignore">Ignore case</label>
+      <p>
+        Based on the work of<br />
+        Erik Arvidsson<br />
+        <a href="http://erik.eae.net/" target="_blank">Website</a><br />
+        <a href="http://erik.eae.net/playground/regexp/regexp.html" target="_blank">RegEx Webversion</a>
+        
+      </p>
+    </div>
+
+    <div id="sample-container" class="container">
+      <label for="sample-text">Sample Text</label>
+      <textarea id="sample-text" tabindex=2></textarea>
+    </div>
+
+    <a id="help-icon" href="#">?</a>
+
+    <div id="result-container" class="container">
+      <label for="result">Result</label>
+      <div id="result"></div>
+    </div>
+
+    <table id="help" style="display:none">
+      <tr>
+        <td><code>.</code></td>
+        <td>any character except a newline</td>
+      </tr>
+      <tr>
+        <td><code>\d</code></td>
+        <td>any decimal digit</td>
+      </tr>
+      <tr>
+        <td><code>\D</code>
+        <td>any non-digit
+      <tr>
+        <td><code>\s</code></td>
+        <td>any whitespace character</td>
+      </tr>
+      <tr>
+        <td><code>\S</code></td>
+        <td>any non-whitespace character</td>
+      </tr>
+      <tr>
+        <td><code>\w</code></td>
+        <td>any alphanumeric character</td>
+      </tr>
+      <tr>
+        <td><code>\W</code></td>
+        <td>any non-alphanumeric character</td>
+      </tr>
+      <tr>
+        <td><code>\number</code></td>
+        <td>the contents of the group with the given number</td>
+      </tr>
+      <tr>
+        <td colspan=2><hr></td>
+      </tr>
+      <tr>
+        <td><code>*</code></td>
+        <td>zero or more of the preceding block</td>
+      </tr>
+      <tr>
+        <td><code>*?</code></td>
+        <td>zero or more of the preceding block (non-greedy)</td>
+      </tr>
+      <tr>
+        <td><code>+</code></td>
+        <td>one or more of the preceding block</td>
+      </tr>
+      <tr>
+        <td><code>+?</code></td>
+        <td>one or more of the preceding block (non-greedy)</td>
+      </tr>
+      <tr>
+        <td><code>?</code></td>
+        <td>zero or one of the preceding block</td>
+      </tr>
+      <tr>
+        <td><code>??</code></td>
+        <td>zero or one of the preceding block (non-greedy)</td>
+      </tr>
+      <tr>
+        <td><code>{m}</code></td>
+        <td>exactly m copies of the preceding block</td>
+      </tr>
+      <tr>
+        <td><code>{m, n}</code></td>
+        <td>m to n copies of the preceding block</td>
+      </tr>
+      <tr>
+        <td><code>{m, n}?</code></td>
+        <td>m to n copies of the preceding block (no-greedy)</td>
+      </tr>
+      <tr>
+        <td colspan=2><hr></td>
+      </tr>
+      <tr>
+        <td><code>^</code></td>
+        <td>beginning of line</td>
+      </tr>
+      <tr>
+        <td><code>$</code></td>
+        <td>end of line</td>
+      </tr>
+      <tr>
+        <td><code>\b</code></td>
+        <td>word boundary</td>
+      </tr>
+      <tr>
+        <td><code>\B</code></td>
+        <td>non-word boundary</td>
+      </tr>
+      <tr>
+        <td colspan=2><hr></td>
+      </tr>
+      <tr>
+        <td><code>(...)</code></td>
+        <td>group</td>
+      </tr>
+      <tr>
+        <td><code>(?:...)</code></td>
+        <td>non-grouping group</td>
+      </tr>
+      <tr>
+        <td><code>(?=...)</code></td>
+        <td>matches if &lt;...> matches next, but does not consume the string</td>
+      </tr>
+      <tr>
+        <td><code>(?!...)</code></td>
+        <td>matches if &lt;...> does NOT match next, but does not consume the string</td>
+      </tr>
+      <tr>
+        <td colspan=2><hr></td>
+      </tr>
+      <tr>
+        <td><code>x|y</code></td>
+        <td>matches x or y</td>
+      </tr>
+      <tr>
+        <td><code>[xyz]</code></td>
+        <td>matches any one of x, y or z</td>
+      </tr>
+      <tr>
+        <td><code>[^xyz]</code></td>
+        <td>matches any character except x, y or z</td>
+      </tr>
+      <tr>
+        <td><code>[a-z]</code></td>
+        <td>matches any one character between a and z</td>
+      </tr>
+      <tr>
+        <td><code>[^a-z]</code></td>
+        <td>matches any one character except the characters between a and z</td>
+      </tr>
+    </table>
+
+</body>
+</html>
